@@ -34,8 +34,8 @@ SKIP:
 	skip "Binary GIS data not found.
 	(Have you run wdb2merc yet ? 
 	Did you set the WDB_BIN environment variable to 
-		the WDB binary data directory ?)", 11 unless $ok;
-	skip "basemaps directory not found.", 11
+		the WDB binary data directory ?)", 10 unless $ok;
+	skip "basemaps directory not found.", 10
 		unless -d "./basemaps";
 
 my $map = GD::Map::Mercator->new(

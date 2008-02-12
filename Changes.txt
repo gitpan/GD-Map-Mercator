@@ -1,5 +1,8 @@
-Change history for GD::Map::Mercator.
+Change history for GD::Map::Mercator
 
-1.01  2007-Jan-24	D. Arnold
+1.02	2008-Feb-12	D. Arnold
+	- fix test suite to use correct skip count
+
+1.01	2008-Jan-24	D. Arnold
 	- initial rewrite from GD::Map
 

@@ -29,7 +29,7 @@ use warnings;
 use GD;
 use GD::Polyline;
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 
 #
