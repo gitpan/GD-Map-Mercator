@@ -29,7 +29,7 @@ use warnings;
 use GD;
 use GD::Polyline;
 
-our $VERSION = '1.02';
+our $VERSION = '1.03';
 
 
 #
@@ -295,8 +295,14 @@ sub new {
 		if $self->{verbose};
 	($width, $height) = $mercator->dimensions();
 	my $img = $self->{image} = GD::Image->new($width, $height);
-	$self->{fg} = ref $fg ? $img->colorAllocate(@$fg) : $img->colorAllocate(@{$colors{$fg}});
-	$self->{bg} = ref $bg ? $img->colorAllocate(@$bg) : $img->colorAllocate(@{$colors{$bg}});
+	$self->{fg} = ref $fg ? $img->colorAllocate(@$fg) : 
+		($fg=~/^#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$/i)
+			? $img->colorAllocate(hex($1), hex($2), hex($3))
+			: $img->colorAllocate(@{$colors{$fg}});
+	$self->{bg} = ref $bg ? $img->colorAllocate(@$bg) : 
+		($bg=~/^#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$/i)
+			? $img->colorAllocate(hex($1), hex($2), hex($3))
+			: $img->colorAllocate(@{$colors{$bg}});
 	$img->filledRectangle(0,0,$width-1,$height-1,$self->{bg});
 	$img->setThickness($linew);
 
@@ -435,7 +441,7 @@ sub extract {
 			verbose => $self->{verbose},
 			thickness => $self->{thickness},
 			foreground => $self->{foreground},
-			backkground => $self->{background},
+			background => $self->{background},
 			keep => $self->{keep},
 			omit => $self->{omit},
 			save_coords => $self->{save_coords},
@@ -453,7 +459,7 @@ sub extract {
 		verbose => $self->{verbose},
 		thickness => $self->{thickness},
 		foreground => $self->{foreground},
-		backkground => $self->{background},
+		background => $self->{background},
 		keep => $self->{keep},
 		omit => $self->{omit},
 		save_coords => $self->{save_coords},
@@ -463,8 +469,14 @@ sub extract {
 	($width, $height) = $newmap->{mercator}->dimensions(); 
 	my ($fg, $bg) = @$self{qw(foreground background)};
 	my $img = $newmap->{image} = GD::Image->new($width, $height);
-	$newmap->{fg} = ref $fg ? $img->colorAllocate(@$fg) : $img->colorAllocate(@{$colors{$fg}});
-	$newmap->{bg} = ref $bg ? $img->colorAllocate(@$bg) : $img->colorAllocate(@{$colors{$bg}});
+	$newmap->{fg} = ref $fg ? $img->colorAllocate(@$fg) :
+		($fg=~/^#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$/i)
+			? $img->colorAllocate(hex($1), hex($2), hex($3))
+			: $img->colorAllocate(@{$colors{$fg}});
+	$newmap->{bg} = ref $bg ? $img->colorAllocate(@$bg) :
+		($bg=~/^#([0-9A-F]{2})([0-9A-F]{2})([0-9A-F]{2})$/i)
+			? $img->colorAllocate(hex($1), hex($2), hex($3))
+			: $img->colorAllocate(@{$colors{$bg}});
 	$img->filledRectangle(1,1,$width,$height,$newmap->{bg});
 	$img->setThickness($newmap->{thickness});
 	$newmap->{image}->copy($self->{image}, 0, 0, $xmax, $ymax, $width, $height);
@@ -508,7 +520,7 @@ sub scale {
 		silent => !$self->{verbose},
 		thickness => $self->{thickness},
 		foreground => $self->{foreground},
-		backkground => $self->{background},
+		background => $self->{background},
 		keep => $self->{keep},
 		omit => $self->{omit},
 		save_coords => $self->{save_coords},

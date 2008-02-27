@@ -35,7 +35,7 @@ GD::Map::Mercator - Create Mercator projected map images using GD
     #
     #    grab the image as an GD object
     #
-    my $imager = $newmap->get_image();
+    my $imager = $newmap->image();
     #
     #    draw some stuff on it
     #
